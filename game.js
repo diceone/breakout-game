@@ -14,19 +14,45 @@ const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2;
 
 // Brick properties
-const brickRowCount = 5;
-const brickColumnCount = 9;
-const brickWidth = 75;
+const brickWidth = 20;
 const brickHeight = 20;
-const brickPadding = 10;
+const brickPadding = 2;
 const brickOffsetTop = 30;
-const brickOffsetLeft = 30;
+const brickOffsetLeft = 250; // Adjust for centering the lungs
+
+// Lung shape pattern
+const lungPattern = [
+    "011000000000011",
+    "1111000000001111",
+    "1111100000011111",
+    "1111110000111111",
+    "1111111001111111",
+    "1111111011111111",
+    "1111111011111111",
+    "1111111011111111",
+    "1111111011111111",
+    "1111111011111111",
+    "1111111011111111",
+    "1111111011111111",
+    "1111111011111111",
+    "011111101111110",
+    "001111101111100",
+    "000111101111000",
+    "000011101110000",
+    "000001001000000"
+];
 
 let bricks = [];
-for (let c = 0; c < brickColumnCount; c++) {
-    bricks[c] = [];
-    for (let r = 0; r < brickRowCount; r++) {
-        bricks[c][r] = { x: 0, y: 0, status: 1 };
+for (let r = 0; r < lungPattern.length; r++) {
+    bricks[r] = [];
+    for (let c = 0; c < lungPattern[r].length; c++) {
+        if (lungPattern[r][c] === "1") {
+            let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+            let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+            bricks[r][c] = { x: brickX, y: brickY, status: 1 };
+        } else {
+            bricks[r][c] = { x: 0, y: 0, status: 0 }; // Inactive brick
+        }
     }
 }
 
@@ -70,15 +96,11 @@ function drawPaddle() {
 }
 
 function drawBricks() {
-    for (let c = 0; c < brickColumnCount; c++) {
-        for (let r = 0; r < brickRowCount; r++) {
-            if (bricks[c][r].status === 1) {
-                let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-                let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
-                bricks[c][r].x = brickX;
-                bricks[c][r].y = brickY;
+    for (let r = 0; r < lungPattern.length; r++) {
+        for (let c = 0; c < lungPattern[r].length; c++) {
+            if (bricks[r][c].status === 1) {
                 ctx.beginPath();
-                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.rect(bricks[r][c].x, bricks[r][c].y, brickWidth, brickHeight);
                 ctx.fillStyle = "#fff";
                 ctx.fill();
                 ctx.closePath();
@@ -88,9 +110,9 @@ function drawBricks() {
 }
 
 function collisionDetection() {
-    for (let c = 0; c < brickColumnCount; c++) {
-        for (let r = 0; r < brickRowCount; r++) {
-            let b = bricks[c][r];
+    for (let r = 0; r < lungPattern.length; r++) {
+        for (let c = 0; c < lungPattern[r].length; c++) {
+            let b = bricks[r][c];
             if (b.status === 1) {
                 if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
                     dy = -dy;
