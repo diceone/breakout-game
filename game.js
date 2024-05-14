@@ -1,6 +1,10 @@
 const canvas = document.getElementById("breakoutCanvas");
 const ctx = canvas.getContext("2d");
 
+// Load cigarette image
+const cigaretteImg = new Image();
+cigaretteImg.src = 'cigarette.png';
+
 // Ball properties
 let ballRadius = 10;
 let x = canvas.width / 2;
@@ -9,8 +13,8 @@ let dx = 2;
 let dy = -2;
 
 // Paddle properties
-const paddleHeight = 10;
-const paddleWidth = 75;
+const paddleWidth = 100; // Adjust width according to your image size
+const paddleHeight = 30; // Adjust height according to your image size
 let paddleX = (canvas.width - paddleWidth) / 2;
 
 // Brick properties
@@ -18,29 +22,34 @@ const brickWidth = 15;
 const brickHeight = 15;
 const brickPadding = 3;
 const brickOffsetTop = 30;
-const brickOffsetLeft = 170; // Adjust for centering the lungs
+const brickOffsetLeft = 180; // Adjust for centering the lungs
 
 // Lung shape pattern
 const lungPattern = [
-    "0000011000000000000000110",
-    "0001111100000000000011111",
-    "0011111110000000001111111",
-    "0111111111000000111111111",
-    "0111111111100001111111111",
-    "0111111111110011111111111",
-    "0111111111110111111111111",
-    "0111111111110111111111111",
-    "0111111111110111111111111",
-    "0111111111110111111111111",
-    "0111111111110111111111111",
-    "0111111111110111111111111",
-    "0111111111110111111111111",
-    "0001111111110111111111100",
-    "0000111111110111111111000",
-    "0000011111110111111110000",
-    "0000001111110111111100000",
-    "0000000111010111011100000",
-    "0000000010000100010000000"
+    "0000001110000000111",
+    "0000111111000011111",
+    "0001111111100111111",
+    "0011111111111111111",
+    "0111111111111111111",
+    "0111111111111111111",
+    "1111111111111111111",
+    "1111111111111111111",
+    "1111111111111111111",
+    "1111111111111111111",
+    "1111111111111111111",
+    "1111111111111111111",
+    "1111111111111111111",
+    "1111111111111111111",
+    "0111111111111111110",
+    "0111111111111111110",
+    "0011111111111111100",
+    "0001111111111111000",
+    "0000111111111110000",
+    "0000011111111100000",
+    "0000001111111000000",
+    "0000000111110000000",
+    "0000000011100000000",
+    "0000000001000000000"
 ];
 
 let bricks = [];
@@ -89,11 +98,7 @@ function drawBall() {
 }
 
 function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#fff";
-    ctx.fill();
-    ctx.closePath();
+    ctx.drawImage(cigaretteImg, paddleX, canvas.height - paddleHeight - 10, paddleWidth, paddleHeight);
 }
 
 function drawBricks() {
@@ -163,4 +168,7 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-draw();
+// Wait for the image to load before starting the game
+cigaretteImg.onload = function() {
+    draw();
+};
