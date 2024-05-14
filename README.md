@@ -44,18 +44,23 @@ Open `index.html` in your web browser:
 
 ```bash
 open index.html
-
+```
 Docker Usage
 Build the Docker image:
 
-bash
 Code kopieren
-docker build -t breakout-game .
-Run the Docker container:
 
-bash
+```bash
+docker build -t breakout-game .
+```
+
+Run the Docker container:
 Code kopieren
+
+```bash
 docker run -d -p 8080:80 --name breakout-container breakout-game
+```
+
 Open your web browser and navigate to http://localhost:8080.
 
 Game Controls
